@@ -1,0 +1,403 @@
+openapi: 3.0.3
+info:
+  title: PetSitter API
+  version: "0.1"
+tags:
+  - name: Users
+    description: User-related operations
+  - name: Jobs
+    description: Job-related operations
+servers:
+- url: /
+paths:
+  /users:
+    post:
+      summary: Register User
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              style: simple
+              explode: false
+              schema:
+                type: string
+      x-swagger-router-controller: Default
+  /users/{id}:
+    get:
+      summary: View User
+      operationId: viewUserWithId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      x-swagger-router-controller: Default
+    put:
+      summary: Modify User
+      operationId: modifyUserWithId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      x-swagger-router-controller: Default
+    delete:
+      summary: Delete User
+      operationId: deleteUserWithId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: No Content
+      x-swagger-router-controller: Default
+  /users/{id}/jobs:
+    get:
+      summary: List Jobs For User
+      operationId: listJobsForUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+      x-swagger-router-controller: Default
+  /jobs:
+    get:
+      summary: List All Jobs
+      operationId: listAllJobs
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Job'
+                x-content-type: application/json
+      x-swagger-router-controller: Default
+    post:
+      summary: Create Job
+      operationId: createJob
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              style: simple
+              explode: false
+              schema:
+                type: string
+      x-swagger-router-controller: Default
+  /jobs/{id}:
+    get:
+      summary: View Job
+      operationId: viewJobWithId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+      x-swagger-router-controller: Default
+    put:
+      summary: Modify Job
+      operationId: modifyJobWithId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          apliication/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+      x-swagger-router-controller: Default
+    delete:
+      summary: Delete Job
+      operationId: deleteJobWithId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: No Content
+      x-swagger-router-controller: Default
+  /jobs/{id}/job-applications:
+    get:
+      summary: List Applications For Job
+      operationId: viewApplicationsForJob
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+      x-swagger-router-controller: Default
+    post:
+      summary: Create JobApplication
+      operationId: createJobApplication
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobApplication'
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              style: simple
+              explode: false
+              schema:
+                type: string
+      x-swagger-router-controller: Default
+  /job-applications/{id}:
+    put:
+      summary: Modify Job Application
+      operationId: modifyJobApplicationWithId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        description: Update the application details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobApplication'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobApplication'
+      x-swagger-router-controller: Default
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        password:
+          type: string
+        full_name:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+      example:
+        password: password
+        full_name: full_name
+        roles:
+        - roles
+        - roles
+        id: 0
+        email: email
+    Job:
+      type: object
+      properties:
+        id:
+          type: integer
+        creator_user_id:
+          type: integer
+        start_time:
+          type: string
+        end_time:
+          type: string
+        activity:
+          type: string
+        dog:
+          $ref: '#/components/schemas/Dog'
+      example:
+        creator_user_id: 6
+        start_time: start_time
+        activity: activity
+        end_time: end_time
+        id: 0
+        dog:
+          size: size
+          name: name
+          age: 1
+          breed: breed
+    Dog:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+        breed:
+          type: string
+        size:
+          type: string
+      example:
+        size: size
+        name: name
+        age: 1
+        breed: breed
+    JobApplication:
+      type: object
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+        user_id:
+          type: integer
+        job_id:
+          type: integer
+      example:
+        user_id: 6
+        job_id: 1
+        id: 0
+        status: status
+    inline_response_200:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+      example:
+        items:
+        - creator_user_id: 6
+          start_time: start_time
+          activity: activity
+          end_time: end_time
+          id: 0
+          dog:
+            size: size
+            name: name
+            age: 1
+            breed: breed
+        - creator_user_id: 6
+          start_time: start_time
+          activity: activity
+          end_time: end_time
+          id: 0
+          dog:
+            size: size
+            name: name
+            age: 1
+            breed: breed
+    inline_response_200_1:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobApplication'
+      example:
+        items:
+        - user_id: 6
+          job_id: 1
+          id: 0
+          status: status
+        - user_id: 6
+          job_id: 1
+          id: 0
+          status: status
